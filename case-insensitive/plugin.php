@@ -65,3 +65,4 @@ function insensitive_get_keyword_infos( $keyword, $use_cache = true ) {
 	}
 
 	return yourls_apply_filter( 'get_keyword_infos', $ydb->infos[$keyword], $keyword );
+}
