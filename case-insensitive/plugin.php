@@ -14,6 +14,7 @@ if( !defined( 'YOURLS_ABSPATH' ) ) die();
 // Hook our custom function into the 'add_new_link' filter
 yourls_add_filter( 'shunt_keyword_is_taken', 'insensitive_keyword_is_taken' );
 yourls_add_filter( 'shunt_get_keyword_info', 'insensitive_get_keyword_info' );
+yourls_add_filter( 'shunt_update_clicks', 'insensitive_update_clicks' );
 
 // If the keyword exists, display the long URL in the error message
 function insensitive_keyword_is_taken( $return, $keyword ) {
@@ -48,8 +49,8 @@ function insensitive_get_keyword_infos( $keyword, $use_cache = true ) {
 
 	yourls_do_action( 'pre_get_keyword', $keyword, $use_cache );
 
-	if( isset( $ydb->infos[$keyword] ) && $use_cache == true ) {
-		return yourls_apply_filter( 'get_keyword_infos', $ydb->infos[$keyword], $keyword );
+	if( $ydb->has_infos($keyword) && $use_cache == true ) {
+		return yourls_apply_filter( 'get_keyword_infos', $ydb->get_infos($keyword), $keyword );
 	}
 
 	yourls_do_action( 'get_keyword_not_cached', $keyword );
@@ -59,9 +60,24 @@ function insensitive_get_keyword_infos( $keyword, $use_cache = true ) {
 
 	if( $infos ) {
 		$infos = (array)$infos;
-		$ydb->infos[ $keyword ] = $infos;
+		$ydb->set_infos($keyword, $infos);
 	} else {
-		$ydb->infos[ $keyword ] = false;
+		$ydb->set_infos($keyword, false);
 	}
 
-	return yourls_apply_filter( 'get_keyword_infos', $ydb->infos[$keyword], $keyword );
+	return yourls_apply_filter( 'get_keyword_infos', $ydb->get_infos($keyword), $keyword );
+}
+
+ function insensitive_update_clicks( $return, $keyword, $clicks = false ) {
+	global $ydb;
+	$keyword = yourls_sanitize_string( $keyword );
+	$table = YOURLS_DB_TABLE_URL;
+    error_log(var_export($keyword, true));
+	if ( $clicks !== false && is_int( $clicks ) && $clicks >= 0 )
+		$update = $ydb->fetchAffected( "UPDATE `$table` SET `clicks` = :clicks WHERE LOWER(`keyword`) = LOWER(:keyword)", array('clicks' => $clicks, 'keyword' => $keyword) );
+	else
+		$update = $ydb->fetchAffected( "UPDATE `$table` SET `clicks` = clicks + 1 WHERE LOWER(`keyword`) = LOWER(:keyword)", array('keyword' => $keyword) );
+
+	yourls_do_action( 'update_clicks', $keyword, $update, $clicks );
+	return $update;
+}
