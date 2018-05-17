@@ -12,3 +12,5 @@ Makes YOURLS case insensitive
 2. Activate the plugin in the YOURLS admin interface.
 
 That's it.
+
+Note: This plugin assumes that the value of YOURLS_URL_CONVERT in your config.php file is 62.  If it's 36 then this plugin is both unecessary and inapplicable since YOURLS will anyway only accept lower case characters.
