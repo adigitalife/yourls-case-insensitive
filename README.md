@@ -1,14 +1,14 @@
-#Case Insensitive YOURLS
+Case Insensitive YOURLS
 Makes YOURLS case insensitive
 
-####IMPORTANT: This plugin does NOT work with YOURLS version 1.9.1 or later.  Instead, try this one: https://github.com/seandrickson/YOURLS-Case-Insensitive
+IMPORTANT: This plugin does NOT work with YOURLS version 1.9.1 or later.  Instead, try this one: https://github.com/seandrickson/YOURLS-Case-Insensitive
 
-####Example use cases:
+Example use cases:
 
 1. Users create short links with mixed cases (ex. ShrtLnk) and then they forget or someone makes a mistake (ex. shrtLnk).  This plugin allows users to make such mistakes (ex. ShrtLnk, shrtLnk, Shrtlnk, shrtlnk, etc. all work the same).
 2. Users might decide to create very similar short links (ex. user 1 creates ShrtLnk and user 2 creates shrtlnk).  This can be confusing.  This plugin eliminates such issues (ex. if user 2 tries to create shrtlnk and ShrtLnk already exists then the short link creation fails).
 
-####Instructions:
+Instructions:
 
 1. Copy the 'case-insensitive' folder to user/plugins/.
 2. Activate the plugin in the YOURLS admin interface.
