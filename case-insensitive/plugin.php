@@ -23,7 +23,7 @@ function insensitive_keyword_is_taken( $return, $keyword ) {
         $keyword = yourls_sanitize_keyword( $keyword );
         $taken = false;
         $table = YOURLS_DB_TABLE_URL;
-        $already_exists = yourls_get_db()->fetchValue( "SELECT COUNT(`keyword`) FROM `$table` WHERE LOWER(`keyword`) = LOWER('$keyword');" );
+        $already_exists = yourls_get_db()->fetchValue( "SELECT COUNT(`keyword`) FROM `$table` WHERE LOWER(`keyword`) = LOWER('$keyword')" );
         if ( $already_exists )
                 $taken = true;
 
