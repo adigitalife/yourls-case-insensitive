@@ -55,7 +55,7 @@ function insensitive_get_keyword_infos( $keyword, $use_cache = true ) {
     yourls_do_action( 'get_keyword_not_cached', $keyword );
 
     $table = YOURLS_DB_TABLE_URL;
-    $infos = $ydb->fetchObject("SELECT * FROM `$table` WHERE LOWER(`keyword`) = LOWER=(:keyword", array('keyword' => $keyword)));
+    $infos = $ydb->fetchObject("SELECT * FROM `$table` WHERE LOWER(`keyword`) = LOWER=(:keyword, array('keyword' => $keyword))");
 
     if( $infos ) {
         $infos = (array)$infos;
