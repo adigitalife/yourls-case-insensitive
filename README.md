@@ -1,4 +1,3 @@
-Case Insensitive YOURLS
 Makes YOURLS case insensitive
 
 Example use cases:
