@@ -43,28 +43,25 @@ function insensitive_get_keyword_info( $return, $keyword, $field, $notfound ) {
 }
 
 function insensitive_get_keyword_infos( $keyword, $use_cache = true ) {
-    $ydb = yourls_get_db();
-    $keyword = yourls_sanitize_keyword( $keyword );
+        static $ci_cache = array();
+        $keyword = yourls_sanitize_keyword( $keyword );
 
-    yourls_do_action( 'pre_get_keyword', $keyword, $use_cache );
+        yourls_do_action( 'pre_get_keyword', $keyword, $use_cache );
 
-    if( $ydb->has_infos($keyword) && $use_cache === true ) {
-        return yourls_apply_filter( 'get_keyword_infos', $ydb->get_infos($keyword), $keyword );
-    }
+        if( isset( $ci_cache[ $keyword ] ) && $use_cache === true ) {
+                return yourls_apply_filter( 'get_keyword_infos', $ci_cache[ $keyword ], $keyword );
+        }
 
-    yourls_do_action( 'get_keyword_not_cached', $keyword );
+        yourls_do_action( 'get_keyword_not_cached', $keyword );
 
-    $table = YOURLS_DB_TABLE_URL;
-    $infos = $ydb->fetchObject("SELECT * FROM `$table` WHERE LOWER(`keyword`) = LOWER=(:keyword, array('keyword' => $keyword))");
+        $table = YOURLS_DB_TABLE_URL;
+        $infos = yourls_get_db()->fetchObject( "SELECT * FROM `$table` WHERE LOWER(`keyword`) = LOWER(:keyword)", array( 'keyword' => $keyword ) );
 
-    if( $infos ) {
-        $infos = (array)$infos;
-        $ydb->set_infos($keyword, $infos);
-    } else {
-        // is NULL if not found
-        $infos = false;
-        $ydb->set_infos($keyword, false);
-    }
+        if( $infos ) {
+                $infos = (array)$infos;
+        } else {
+               $infos = false;
+        }
 
     return yourls_apply_filter( 'get_keyword_infos', $infos, $keyword );
 }
