@@ -12,4 +12,6 @@ Instructions:
 
 That's it.
 
-Note: This plugin assumes that the value of YOURLS_URL_CONVERT in your config.php file is 62.  If it's 36 then this plugin is both unecessary and inapplicable since YOURLS will anyway only accept lower case characters.
+Note 1: This plugin assumes that the value of YOURLS_URL_CONVERT in your config.php file is 62.  If it's 36 then this plugin is both unecessary and inapplicable since YOURLS will anyway only accept lower case characters.
+
+Note 2: Tested with YOURLS 1.10.2
